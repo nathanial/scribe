@@ -51,12 +51,21 @@ def build (m : HtmlM r l Unit) : Html :=
   | [single] => single
   | list => .fragment list
 
-/-- Run a builder and render to string -/
-def render (m : HtmlM r l Unit) : String :=
+/-- Render volatile content to string (safe for HTMX partials) -/
+def render (m : HtmlM .volatile l Unit) : String :=
   (build m).render
 
-/-- Run a builder and render with pretty printing -/
-def renderPretty (m : HtmlM r l Unit) : String :=
+/-- Render stable content to string (for full page renders where the
+    entire page is stable, e.g. Layout.render) -/
+def renderStable (m : HtmlM .stable l Unit) : String :=
+  (build m).render
+
+/-- Render volatile content with pretty printing -/
+def renderPretty (m : HtmlM .volatile l Unit) : String :=
+  (build m).renderPretty
+
+/-- Render stable content with pretty printing -/
+def renderStablePretty (m : HtmlM .stable l Unit) : String :=
   (build m).renderPretty
 
 end HtmlM
@@ -92,10 +101,10 @@ def stableRegion (id : String) (attrs : List Attr := [])
   let inner := HtmlM.collect children
   HtmlM.emit (.element "div" ([id_ id] ++ attrs) inner.toList)
 
-/-- Lift stable content into any region context (safe direction).
-    Stable content is always safe to include anywhere.
+/-- Lift volatile content into any region context (safe direction).
+    Volatile content (display only) is safe to include anywhere.
     Level must match. -/
-def liftStable (m : HtmlM .stable l Unit) : HtmlM r l Unit :=
+def liftVolatile (m : HtmlM .volatile l Unit) : HtmlM r l Unit :=
   (m : StateM BuilderState Unit)
 
 -- Level boundary combinators
