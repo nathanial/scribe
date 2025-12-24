@@ -59,26 +59,26 @@ test "fragment renders children without wrapper" := do
 -- HtmlM Builder Tests
 
 test "build creates fragment from children" := do
-  let html := HtmlM.build do
+  let html := HtmlM.build (r := .volatile) (l := .nested) do
     HtmlM.text "Hello"
     HtmlM.text " World"
   html.render ≡ "Hello World"
 
 test "element builder creates proper structure" := do
-  let html := HtmlM.build do
+  let html := HtmlM.build (r := .volatile) (l := .nested) do
     div [] do
       text "Content"
   html.render ≡ "<div>Content</div>"
 
 test "nested builder elements" := do
-  let html := HtmlM.build do
+  let html := HtmlM.build (r := .volatile) (l := .nested) do
     div [] do
       p [] do
         text "Paragraph"
   html.render ≡ "<div><p>Paragraph</p></div>"
 
 test "multiple children in builder" := do
-  let html := HtmlM.build do
+  let html := HtmlM.build (r := .volatile) (l := .nested) do
     ul [] do
       li [] (text "One")
       li [] (text "Two")
@@ -86,14 +86,14 @@ test "multiple children in builder" := do
   html.render ≡ "<ul><li>One</li><li>Two</li><li>Three</li></ul>"
 
 test "builder with attributes" := do
-  let html := HtmlM.build do
+  let html := HtmlM.build (r := .volatile) (l := .nested) do
     div [class_ "container", id_ "main"] do
       text "Hello"
   html.render ≡ "<div class=\"container\" id=\"main\">Hello</div>"
 
 test "control flow in builder - if" := do
   let showExtra := true
-  let html := HtmlM.build do
+  let html := HtmlM.build (r := .volatile) (l := .nested) do
     div [] do
       text "Always"
       if showExtra then
@@ -102,14 +102,14 @@ test "control flow in builder - if" := do
 
 test "control flow in builder - for" := do
   let items := ["A", "B", "C"]
-  let html := HtmlM.build do
+  let html := HtmlM.build (r := .volatile) (l := .nested) do
     ul [] do
       for item in items do
         li [] (text item)
   html.render ≡ "<ul><li>A</li><li>B</li><li>C</li></ul>"
 
 test "HtmlM.render produces string directly" := do
-  let result := HtmlM.render do
+  let result := HtmlM.render (l := .nested) do
     p [] (text "Test")
   result ≡ "<p>Test</p>"
 
@@ -138,13 +138,13 @@ test "boolean attributes have empty value" := do
 -- HTML Element Tests
 
 test "html element" := do
-  let result := HtmlM.render do
+  let result := HtmlM.render (l := .nested) do
     html [] do
       text "Content"
   result ≡ "<html>Content</html>"
 
 test "complete document structure" := do
-  let result := HtmlM.render do
+  let result := HtmlM.render (l := .nested) do
     html [] do
       head [] do
         title "Test"
@@ -153,20 +153,21 @@ test "complete document structure" := do
   result ≡ "<html><head><title>Test</title></head><body>Body</body></html>"
 
 test "link element with text" := do
-  let result := HtmlM.render do
+  let result := HtmlM.render (l := .nested) do
     a [href_ "/page"] do
       text "Click me"
   result ≡ "<a href=\"/page\">Click me</a>"
 
 test "form elements" := do
-  let result := HtmlM.render do
+  -- form requires stable region
+  let result := HtmlM.renderStable (l := .nested) do
     form [action_ "/submit", method_ "POST"] do
       input [type_ "text", name_ "username"]
       button [type_ "submit"] (text "Submit")
   result ≡ "<form action=\"/submit\" method=\"POST\"><input type=\"text\" name=\"username\"><button type=\"submit\">Submit</button></form>"
 
 test "table structure" := do
-  let result := HtmlM.render do
+  let result := HtmlM.render (l := .nested) do
     table [] do
       tr [] do
         th [] (text "Header")
@@ -175,12 +176,12 @@ test "table structure" := do
   result ≡ "<table><tr><th>Header</th></tr><tr><td>Cell</td></tr></table>"
 
 test "image element" := do
-  let result := HtmlM.render do
+  let result := HtmlM.render (l := .nested) do
     img [src_ "photo.jpg", alt_ "A photo"]
   result ≡ "<img src=\"photo.jpg\" alt=\"A photo\">"
 
 test "br element" := do
-  let result := HtmlM.render do
+  let result := HtmlM.render (l := .nested) do
     p [] do
       text "Line 1"
       br
