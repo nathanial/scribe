@@ -86,6 +86,47 @@ def onsubmit_ (v : String) : Attr := ⟨"onsubmit", v⟩
 def onchange_ (v : String) : Attr := ⟨"onchange", v⟩
 def oninput_ (v : String) : Attr := ⟨"oninput", v⟩
 
+-- HTMX attributes
+-- Core request attributes
+def hx_get (v : String) : Attr := ⟨"hx-get", v⟩
+def hx_post (v : String) : Attr := ⟨"hx-post", v⟩
+def hx_put (v : String) : Attr := ⟨"hx-put", v⟩
+def hx_patch (v : String) : Attr := ⟨"hx-patch", v⟩
+def hx_delete (v : String) : Attr := ⟨"hx-delete", v⟩
+
+-- Targeting and swapping
+def hx_target (v : String) : Attr := ⟨"hx-target", v⟩
+def hx_swap (v : String) : Attr := ⟨"hx-swap", v⟩
+def hx_select (v : String) : Attr := ⟨"hx-select", v⟩
+def hx_select_oob (v : String) : Attr := ⟨"hx-select-oob", v⟩
+def hx_swap_oob (v : String) : Attr := ⟨"hx-swap-oob", v⟩
+
+-- Triggering
+def hx_trigger (v : String) : Attr := ⟨"hx-trigger", v⟩
+def hx_confirm (v : String) : Attr := ⟨"hx-confirm", v⟩
+
+-- Request modifiers
+def hx_vals (v : String) : Attr := ⟨"hx-vals", v⟩
+def hx_headers (v : String) : Attr := ⟨"hx-headers", v⟩
+def hx_include (v : String) : Attr := ⟨"hx-include", v⟩
+def hx_params (v : String) : Attr := ⟨"hx-params", v⟩
+def hx_encoding (v : String) : Attr := ⟨"hx-encoding", v⟩
+
+-- UI feedback
+def hx_indicator (v : String) : Attr := ⟨"hx-indicator", v⟩
+def hx_disabled_elt (v : String) : Attr := ⟨"hx-disabled-elt", v⟩
+
+-- History and URL
+def hx_push_url (v : String) : Attr := ⟨"hx-push-url", v⟩
+def hx_replace_url (v : String) : Attr := ⟨"hx-replace-url", v⟩
+def hx_history_elt : Attr := ⟨"hx-history-elt", ""⟩
+
+-- Other
+def hx_boost (v : String := "true") : Attr := ⟨"hx-boost", v⟩
+def hx_ext (v : String) : Attr := ⟨"hx-ext", v⟩
+def hx_preserve : Attr := ⟨"hx-preserve", ""⟩
+def hx_sync (v : String) : Attr := ⟨"hx-sync", v⟩
+
 -- Generic attribute constructor
 def attr_ (name : String) (value : String) : Attr := ⟨name, value⟩
 
