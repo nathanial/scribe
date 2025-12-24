@@ -130,4 +130,23 @@ def hx_sync (v : String) : Attr := ⟨"hx-sync", v⟩
 -- Generic attribute constructor
 def attr_ (name : String) (value : String) : Attr := ⟨name, value⟩
 
+-- ============================================================================
+-- Type-safe HTMX targeting
+-- ============================================================================
+
+/-- Wrapper type documenting intent to target a volatile region.
+    Use this with hx_target_vol to indicate the target is safe to refresh. -/
+structure VolatileTarget where
+  id : String
+  deriving Repr
+
+/-- Create a volatile target reference.
+    Documents that the referenced ID should be a volatile region. -/
+def volatileTarget (id : String) : VolatileTarget := ⟨id⟩
+
+/-- HTMX target that explicitly documents it references a volatile region.
+    Prefer this over hx_target for type-safe HTMX development. -/
+def hx_target_vol (target : VolatileTarget) : Attr :=
+  ⟨"hx-target", "#" ++ target.id⟩
+
 end Scribe
