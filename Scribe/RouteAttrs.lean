@@ -22,7 +22,7 @@
     path := Route.path
 
   open Scribe in
-  def example : HtmlM .volatile .nested Unit := do
+  def example : HtmlM Unit := do
     button [hx_get' Route.home, hx_target "#content"] (text "Go Home")
     a [href' (Route.users 42)] (text "View User")
   ```
