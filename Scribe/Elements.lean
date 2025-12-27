@@ -8,6 +8,9 @@ namespace Scribe
 
 -- Document structure
 
+/-- Emits the HTML5 DOCTYPE declaration. Should be the first thing in an HTML document. -/
+def doctype : HtmlM Unit := HtmlM.raw "<!DOCTYPE html>\n"
+
 def html (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
   element "html" attrs children
 
@@ -57,6 +60,15 @@ def section_ (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
 
 def article (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
   element "article" attrs children
+
+def address (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "address" attrs children
+
+def hgroup (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "hgroup" attrs children
+
+def search (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "search" attrs children
 
 -- Block elements
 
@@ -139,6 +151,12 @@ def td (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
 def caption (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
   element "caption" attrs children
 
+def colgroup (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "colgroup" attrs children
+
+def col (attrs : List Attr := []) : HtmlM Unit :=
+  emptyElement "col" attrs
+
 -- Inline elements
 
 def span (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
@@ -195,8 +213,46 @@ def abbr (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
 def time (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
   element "time" attrs children
 
+def cite (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "cite" attrs children
+
+def dfn (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "dfn" attrs children
+
+def q (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "q" attrs children
+
+def dataEl (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "data" attrs children
+
+def bdi (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "bdi" attrs children
+
+def bdo (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "bdo" attrs children
+
+def ins (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "ins" attrs children
+
+def del (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "del" attrs children
+
+-- Ruby annotations
+def ruby (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "ruby" attrs children
+
+def rt (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "rt" attrs children
+
+def rp (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "rp" attrs children
+
+-- Line breaks
 def br : HtmlM Unit :=
   emptyElement "br" []
+
+def wbr : HtmlM Unit :=
+  emptyElement "wbr" []
 
 -- Media
 
@@ -223,6 +279,39 @@ def figcaption (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
 
 def iframe (attrs : List Attr := []) (children : HtmlM Unit := pure ()) : HtmlM Unit :=
   element "iframe" attrs children
+
+def track (attrs : List Attr) : HtmlM Unit :=
+  emptyElement "track" attrs
+
+def embed (attrs : List Attr) : HtmlM Unit :=
+  emptyElement "embed" attrs
+
+def object (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "object" attrs children
+
+def param (attrs : List Attr) : HtmlM Unit :=
+  emptyElement "param" attrs
+
+-- Image maps
+def map_ (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "map" attrs children
+
+def area (attrs : List Attr) : HtmlM Unit :=
+  emptyElement "area" attrs
+
+-- Canvas and scripting
+def canvas (attrs : List Attr := []) (children : HtmlM Unit := pure ()) : HtmlM Unit :=
+  element "canvas" attrs children
+
+def noscript (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "noscript" attrs children
+
+-- Web components
+def template_ (attrs : List Attr := []) (children : HtmlM Unit) : HtmlM Unit :=
+  element "template" attrs children
+
+def slot (attrs : List Attr := []) (children : HtmlM Unit := pure ()) : HtmlM Unit :=
+  element "slot" attrs children
 
 -- Forms
 

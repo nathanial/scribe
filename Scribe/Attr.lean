@@ -74,11 +74,73 @@ def integrity_ (v : String) : Attr := ⟨"integrity", v⟩
 def crossorigin_ (v : String) : Attr := ⟨"crossorigin", v⟩
 
 -- ARIA attributes
+-- Labels and descriptions
 def ariaLabel_ (v : String) : Attr := ⟨"aria-label", v⟩
-def ariaHidden_ (v : Bool) : Attr := ⟨"aria-hidden", if v then "true" else "false"⟩
 def ariaDescribedby_ (v : String) : Attr := ⟨"aria-describedby", v⟩
 def ariaLabelledby_ (v : String) : Attr := ⟨"aria-labelledby", v⟩
+def ariaDetails_ (v : String) : Attr := ⟨"aria-details", v⟩
 def role_ (v : String) : Attr := ⟨"role", v⟩
+
+-- State attributes
+def ariaHidden_ (v : Bool) : Attr := ⟨"aria-hidden", if v then "true" else "false"⟩
+def ariaExpanded_ (v : Bool) : Attr := ⟨"aria-expanded", if v then "true" else "false"⟩
+def ariaPressed_ (v : Bool) : Attr := ⟨"aria-pressed", if v then "true" else "false"⟩
+def ariaSelected_ (v : Bool) : Attr := ⟨"aria-selected", if v then "true" else "false"⟩
+def ariaChecked_ (v : Bool) : Attr := ⟨"aria-checked", if v then "true" else "false"⟩
+def ariaCurrent_ (v : String) : Attr := ⟨"aria-current", v⟩
+
+-- Widget attributes
+def ariaDisabled_ (v : Bool) : Attr := ⟨"aria-disabled", if v then "true" else "false"⟩
+def ariaInvalid_ (v : Bool) : Attr := ⟨"aria-invalid", if v then "true" else "false"⟩
+def ariaRequired_ (v : Bool) : Attr := ⟨"aria-required", if v then "true" else "false"⟩
+def ariaReadonly_ (v : Bool) : Attr := ⟨"aria-readonly", if v then "true" else "false"⟩
+def ariaHaspopup_ (v : String) : Attr := ⟨"aria-haspopup", v⟩
+def ariaAutocomplete_ (v : String) : Attr := ⟨"aria-autocomplete", v⟩
+def ariaMultiselectable_ (v : Bool) : Attr := ⟨"aria-multiselectable", if v then "true" else "false"⟩
+def ariaOrientation_ (v : String) : Attr := ⟨"aria-orientation", v⟩
+def ariaPlaceholder_ (v : String) : Attr := ⟨"aria-placeholder", v⟩
+def ariaSort_ (v : String) : Attr := ⟨"aria-sort", v⟩
+
+-- Range attributes
+def ariaValuenow_ (v : Float) : Attr := ⟨"aria-valuenow", toString v⟩
+def ariaValuemin_ (v : Float) : Attr := ⟨"aria-valuemin", toString v⟩
+def ariaValuemax_ (v : Float) : Attr := ⟨"aria-valuemax", toString v⟩
+def ariaValuetext_ (v : String) : Attr := ⟨"aria-valuetext", v⟩
+
+-- Relationship attributes
+def ariaControls_ (v : String) : Attr := ⟨"aria-controls", v⟩
+def ariaOwns_ (v : String) : Attr := ⟨"aria-owns", v⟩
+def ariaFlowto_ (v : String) : Attr := ⟨"aria-flowto", v⟩
+def ariaActivedescendant_ (v : String) : Attr := ⟨"aria-activedescendant", v⟩
+def ariaColcount_ (v : Int) : Attr := ⟨"aria-colcount", toString v⟩
+def ariaColindex_ (v : Int) : Attr := ⟨"aria-colindex", toString v⟩
+def ariaColspan_ (v : Int) : Attr := ⟨"aria-colspan", toString v⟩
+def ariaRowcount_ (v : Int) : Attr := ⟨"aria-rowcount", toString v⟩
+def ariaRowindex_ (v : Int) : Attr := ⟨"aria-rowindex", toString v⟩
+def ariaRowspan_ (v : Int) : Attr := ⟨"aria-rowspan", toString v⟩
+def ariaPosinset_ (v : Int) : Attr := ⟨"aria-posinset", toString v⟩
+def ariaSetsize_ (v : Int) : Attr := ⟨"aria-setsize", toString v⟩
+def ariaLevel_ (v : Int) : Attr := ⟨"aria-level", toString v⟩
+
+-- Live region attributes
+def ariaLive_ (v : String) : Attr := ⟨"aria-live", v⟩
+def ariaAtomic_ (v : Bool) : Attr := ⟨"aria-atomic", if v then "true" else "false"⟩
+def ariaBusy_ (v : Bool) : Attr := ⟨"aria-busy", if v then "true" else "false"⟩
+def ariaRelevant_ (v : String) : Attr := ⟨"aria-relevant", v⟩
+
+-- Drag and drop (deprecated but still used)
+def ariaDropeffect_ (v : String) : Attr := ⟨"aria-dropeffect", v⟩
+def ariaGrabbed_ (v : Bool) : Attr := ⟨"aria-grabbed", if v then "true" else "false"⟩
+
+-- Keyboard attributes
+def ariaKeyshortcuts_ (v : String) : Attr := ⟨"aria-keyshortcuts", v⟩
+def ariaRoledescription_ (v : String) : Attr := ⟨"aria-roledescription", v⟩
+
+-- Error attributes
+def ariaErrormessage_ (v : String) : Attr := ⟨"aria-errormessage", v⟩
+
+-- Modal attribute
+def ariaModal_ (v : Bool) : Attr := ⟨"aria-modal", if v then "true" else "false"⟩
 
 -- Event handler placeholders (values would be JS code)
 def onclick_ (v : String) : Attr := ⟨"onclick", v⟩
@@ -126,9 +188,47 @@ def hx_boost (v : String := "true") : Attr := ⟨"hx-boost", v⟩
 def hx_ext (v : String) : Attr := ⟨"hx-ext", v⟩
 def hx_preserve : Attr := ⟨"hx-preserve", ""⟩
 def hx_sync (v : String) : Attr := ⟨"hx-sync", v⟩
+def hx_disinherit (v : String) : Attr := ⟨"hx-disinherit", v⟩
+def hx_validate (v : String := "true") : Attr := ⟨"hx-validate", v⟩
+def hx_request (v : String) : Attr := ⟨"hx-request", v⟩
+def hx_inherit (v : String) : Attr := ⟨"hx-inherit", v⟩
+
+-- Generic event handler (hx-on:event="handler")
+def hx_on (event : String) (handler : String) : Attr := ⟨s!"hx-on:{event}", handler⟩
+
+-- WebSocket support
+def hx_ws (v : String) : Attr := ⟨"hx-ws", v⟩
+def hx_ws_connect (url : String) : Attr := ⟨"hx-ws", s!"connect:{url}"⟩
+def hx_ws_send : Attr := ⟨"hx-ws", "send"⟩
+
+-- Server-Sent Events support
+def hx_sse (v : String) : Attr := ⟨"hx-sse", v⟩
+def hx_sse_connect (url : String) : Attr := ⟨"hx-sse", s!"connect:{url}"⟩
+def hx_sse_swap (event : String) : Attr := ⟨"hx-sse", s!"swap:{event}"⟩
 
 -- Generic attribute constructor
 def attr_ (name : String) (value : String) : Attr := ⟨name, value⟩
+
+-- ============================================================================
+-- Conditional attribute helpers
+-- ============================================================================
+
+/-- Include an attribute only if the condition is true. Returns empty list if false. -/
+def attr_if (condition : Bool) (a : Attr) : List Attr :=
+  if condition then [a] else []
+
+/-- Include a class only if the condition is true. Returns empty list if false. -/
+def class_if (condition : Bool) (className : String) : List Attr :=
+  if condition then [class_ className] else []
+
+/-- Build a class attribute from a list of (condition, className) pairs.
+    Only class names where the condition is true are included. -/
+def classes (classNames : List (Bool × String)) : Attr :=
+  class_ (classNames.filter (·.1) |>.map (·.2) |> String.intercalate " ")
+
+/-- Build a class attribute from class names, filtering out empty strings. -/
+def classNames (names : List String) : Attr :=
+  class_ (names.filter (· != "") |> String.intercalate " ")
 
 -- ============================================================================
 -- Type-safe HTMX targeting
