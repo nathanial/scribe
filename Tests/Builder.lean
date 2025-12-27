@@ -374,6 +374,57 @@ test "ariaLive_ creates correct attribute" := do
   let attr := ariaLive_ "polite"
   (attr.name, attr.value) ≡ ("aria-live", "polite")
 
+-- Attribute Merging Tests
+
+test "mergeAttrs combines class attributes" := do
+  let result := mergeAttrs [class_ "card"] [class_ "large"]
+  result.length ≡ 1
+  (result.head!.name, result.head!.value) ≡ ("class", "card large")
+
+test "mergeAttrs overrides non-mergeable attributes" := do
+  let result := mergeAttrs [id_ "old"] [id_ "new"]
+  result.length ≡ 1
+  (result.head!.name, result.head!.value) ≡ ("id", "new")
+
+test "mergeAttrs preserves order from first list" := do
+  let result := mergeAttrs [class_ "a", id_ "x"] [class_ "b", id_ "y"]
+  result.length ≡ 2
+  result.map (·.name) ≡ ["class", "id"]
+
+test "mergeAttrs adds new attributes from second list" := do
+  let result := mergeAttrs [class_ "card"] [id_ "main", data_ "x" "1"]
+  result.length ≡ 3
+  result.map (·.name) ≡ ["class", "id", "data-x"]
+
+test "mergeAttrs handles empty first list" := do
+  let result := mergeAttrs [] [class_ "foo", id_ "bar"]
+  result.length ≡ 2
+
+test "mergeAttrs handles empty second list" := do
+  let result := mergeAttrs [class_ "foo", id_ "bar"] []
+  result.length ≡ 2
+
+test "mergeAttrs merges style attributes" := do
+  let result := mergeAttrs [style_ "color: red"] [style_ "font-size: 12px"]
+  result.length ≡ 1
+  (result.head!.name, result.head!.value) ≡ ("style", "color: red font-size: 12px")
+
+test "mergeAttrs skips empty class values" := do
+  let result := mergeAttrs [class_ "card"] [class_ ""]
+  (result.head!.name, result.head!.value) ≡ ("class", "card")
+
+test "+++ operator works like mergeAttrs" := do
+  let result := [class_ "a", id_ "x"] +++ [class_ "b", id_ "y"]
+  result.length ≡ 2
+  (result.head!.name, result.head!.value) ≡ ("class", "a b")
+
+test "mergeAttrs in element context" := do
+  let baseAttrs := [class_ "btn", type_ "button"]
+  let variantAttrs := [class_ "btn-primary", disabled_]
+  let result := HtmlM.render do
+    button (baseAttrs +++ variantAttrs) (text "Click")
+  result ≡ "<button class=\"btn btn-primary\" type=\"button\" disabled=\"\">Click</button>"
+
 #generate_tests
 
 end Tests.Builder

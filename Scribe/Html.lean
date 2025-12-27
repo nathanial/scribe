@@ -8,7 +8,7 @@ namespace Scribe
 structure Attr where
   name : String
   value : String
-  deriving Repr, BEq
+  deriving Repr, BEq, Inhabited
 
 /-- HTML node -/
 inductive Html where

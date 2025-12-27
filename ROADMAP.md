@@ -665,7 +665,7 @@ def myAttrs : AttrM Unit := do
 7. ~~Test VolatileTarget (High, Small)~~ ✅
 
 ### Phase 2 (Core Improvements)
-1. Attribute merging (High, Medium)
+1. ~~Attribute merging (High, Medium)~~ ✅
 2. Component system (High, Large)
 3. SVG support (Medium, Medium)
 4. Form builder DSL (Medium, Medium)

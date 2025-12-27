@@ -2,6 +2,7 @@
   Scribe.Attr - Common HTML attribute helpers
 -/
 import Scribe.Html
+import Std.Data.HashMap
 
 namespace Scribe
 
@@ -229,6 +230,56 @@ def classes (classNames : List (Bool × String)) : Attr :=
 /-- Build a class attribute from class names, filtering out empty strings. -/
 def classNames (names : List String) : Attr :=
   class_ (names.filter (· != "") |> String.intercalate " ")
+
+-- ============================================================================
+-- Attribute merging
+-- ============================================================================
+
+/-- Attributes that should be merged (values concatenated) rather than replaced. -/
+def mergeableAttrs : List String := ["class", "style"]
+
+/-- Check if an attribute name should be merged rather than replaced. -/
+def isMergeableAttr (name : String) : Bool :=
+  mergeableAttrs.contains name
+
+/-- Merge two attribute lists intelligently.
+    - For `class` and `style` attributes: values are concatenated with a space
+    - For other attributes: later values override earlier ones
+    - Preserves order, with attrs2 values appearing after attrs1 values
+
+    Example:
+    ```
+    mergeAttrs [class_ "card", id_ "x"] [class_ "large", id_ "y"]
+    -- Result: [class_ "card large", id_ "y"]
+    ```
+-/
+def mergeAttrs (attrs1 attrs2 : List Attr) : List Attr :=
+  let merged : Std.HashMap String String := attrs1.foldl (init := {}) fun acc attr =>
+    acc.insert attr.name attr.value
+  let merged := attrs2.foldl (init := merged) fun acc attr =>
+    if isMergeableAttr attr.name then
+      match acc[attr.name]? with
+      | some existing =>
+        let newValue := if existing.isEmpty then attr.value
+                        else if attr.value.isEmpty then existing
+                        else s!"{existing} {attr.value}"
+        acc.insert attr.name newValue
+      | none => acc.insert attr.name attr.value
+    else
+      acc.insert attr.name attr.value
+  -- Preserve order: attrs1 names first (in order), then new names from attrs2
+  let names1 := attrs1.map (·.name)
+  let names2 := attrs2.map (·.name) |>.filter (· ∉ names1)
+  let allNames := names1 ++ names2
+  allNames.filterMap fun name =>
+    merged[name]? |>.map fun value => ⟨name, value⟩
+
+/-- Operator for merging attribute lists. Alias for `mergeAttrs`. -/
+def Attr.merge (attrs1 attrs2 : List Attr) : List Attr :=
+  mergeAttrs attrs1 attrs2
+
+/-- Infix operator for attribute merging. -/
+infixl:65 " +++ " => Attr.merge
 
 -- ============================================================================
 -- Type-safe HTMX targeting

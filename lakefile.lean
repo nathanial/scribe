@@ -5,6 +5,7 @@ package scribe where
   version := v!"0.1.0"
 
 require crucible from ".." / "crucible"
+require batteries from git "https://github.com/leanprover-community/batteries" @ "v4.26.0"
 
 @[default_target]
 lean_lib Scribe where
