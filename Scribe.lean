@@ -20,6 +20,7 @@
 
 import Scribe.Html
 import Scribe.Attr
+import Scribe.AttrValues
 import Scribe.Builder
 import Scribe.Elements
 import Scribe.RouteAttrs

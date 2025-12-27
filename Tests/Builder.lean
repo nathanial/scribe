@@ -515,6 +515,142 @@ test "svg title for accessibility" := do
       Svg.circle [Svg.cx_ 50, Svg.cy_ 50, Svg.r_ 40, Svg.fill_ "red"]
   result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"A red circle\"><title>Red Circle</title><circle cx=\"50.000000\" cy=\"50.000000\" r=\"40.000000\" fill=\"red\"></circle></svg>"
 
+-- Type-Safe Attribute Value Tests
+
+test "inputType creates correct type attribute" := do
+  let attr := inputType .email
+  (attr.name, attr.value) ≡ ("type", "email")
+
+test "inputType password" := do
+  let attr := inputType .password
+  (attr.name, attr.value) ≡ ("type", "password")
+
+test "inputType checkbox" := do
+  let attr := inputType .checkbox
+  (attr.name, attr.value) ≡ ("type", "checkbox")
+
+test "inputType datetimeLocal uses hyphenated value" := do
+  let attr := inputType .datetimeLocal
+  (attr.name, attr.value) ≡ ("type", "datetime-local")
+
+test "buttonType submit" := do
+  let attr := buttonType .submit
+  (attr.name, attr.value) ≡ ("type", "submit")
+
+test "buttonType button" := do
+  let attr := buttonType .button
+  (attr.name, attr.value) ≡ ("type", "button")
+
+test "formMethod post" := do
+  let attr := formMethod .post
+  (attr.name, attr.value) ≡ ("method", "POST")
+
+test "formMethod get" := do
+  let attr := formMethod .get
+  (attr.name, attr.value) ≡ ("method", "GET")
+
+test "formEnctype multipart" := do
+  let attr := formEnctype .multipart
+  (attr.name, attr.value) ≡ ("enctype", "multipart/form-data")
+
+test "target blank" := do
+  let attr := target .blank
+  (attr.name, attr.value) ≡ ("target", "_blank")
+
+test "target self" := do
+  let attr := target .self
+  (attr.name, attr.value) ≡ ("target", "_self")
+
+test "autocomplete email" := do
+  let attr := autocomplete .email
+  (attr.name, attr.value) ≡ ("autocomplete", "email")
+
+test "autocomplete newPassword" := do
+  let attr := autocomplete .newPassword
+  (attr.name, attr.value) ≡ ("autocomplete", "new-password")
+
+test "loading lazy" := do
+  let attr := loading .lazy
+  (attr.name, attr.value) ≡ ("loading", "lazy")
+
+test "crossorigin anonymous" := do
+  let attr := crossorigin .anonymous
+  (attr.name, attr.value) ≡ ("crossorigin", "anonymous")
+
+test "referrerPolicy strictOrigin" := do
+  let attr := referrerPolicy .strictOrigin
+  (attr.name, attr.value) ≡ ("referrerpolicy", "strict-origin")
+
+test "rel stylesheet" := do
+  let attr := rel .stylesheet
+  (attr.name, attr.value) ≡ ("rel", "stylesheet")
+
+test "rels combines multiple values" := do
+  let attr := rels [.noopener, .noreferrer]
+  (attr.name, attr.value) ≡ ("rel", "noopener noreferrer")
+
+test "dir rtl" := do
+  let attr := dir .rtl
+  (attr.name, attr.value) ≡ ("dir", "rtl")
+
+test "inputmode numeric" := do
+  let attr := inputmode .numeric
+  (attr.name, attr.value) ≡ ("inputmode", "numeric")
+
+test "scope col" := do
+  let attr := scope .col
+  (attr.name, attr.value) ≡ ("scope", "col")
+
+test "preload metadata" := do
+  let attr := preload .metadata
+  (attr.name, attr.value) ≡ ("preload", "metadata")
+
+test "sandbox empty" := do
+  let attr := sandbox
+  (attr.name, attr.value) ≡ ("sandbox", "")
+
+test "sandboxAllow with permissions" := do
+  let attr := sandboxAllow [.allowScripts, .allowSameOrigin]
+  (attr.name, attr.value) ≡ ("sandbox", "allow-scripts allow-same-origin")
+
+test "hxSwap innerHTML" := do
+  let attr := hxSwap .innerHTML
+  (attr.name, attr.value) ≡ ("hx-swap", "innerHTML")
+
+test "hxSwap outerHTML" := do
+  let attr := hxSwap .outerHTML
+  (attr.name, attr.value) ≡ ("hx-swap", "outerHTML")
+
+test "hxSwapWith modifiers" := do
+  let attr := hxSwapWith .innerHTML "swap:1s"
+  (attr.name, attr.value) ≡ ("hx-swap", "innerHTML swap:1s")
+
+test "hxTrigger click" := do
+  let attr := hxTrigger .click
+  (attr.name, attr.value) ≡ ("hx-trigger", "click")
+
+test "hxTrigger every interval" := do
+  let attr := hxTrigger (.every "5s")
+  (attr.name, attr.value) ≡ ("hx-trigger", "every 5s")
+
+test "hxTriggerWith modifiers" := do
+  let attr := hxTriggerWith .click "once delay:500ms"
+  (attr.name, attr.value) ≡ ("hx-trigger", "click once delay:500ms")
+
+test "type-safe form in element context" := do
+  let result := HtmlM.render do
+    form [formMethod .post, formEnctype .multipart] do
+      input [inputType .email, name_ "email", autocomplete .email, required_]
+      input [inputType .password, name_ "password", autocomplete .currentPassword]
+      button [buttonType .submit] (text "Login")
+  result ≡ "<form method=\"POST\" enctype=\"multipart/form-data\"><input type=\"email\" name=\"email\" autocomplete=\"email\" required=\"\"><input type=\"password\" name=\"password\" autocomplete=\"current-password\"><button type=\"submit\">Login</button></form>"
+
+test "type-safe link element" := do
+  let result := HtmlM.render do
+    a [href_ "https://example.com", target .blank, rels [.noopener, .noreferrer]] do
+      text "External Link"
+  result ≡ "<a href=\"https://example.com\" target=\"_blank\" rel=\"noopener noreferrer\">External Link</a>"
+
 #generate_tests
 
 end Tests.Builder
