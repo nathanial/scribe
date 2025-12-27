@@ -3,6 +3,7 @@
 -/
 import Crucible
 import Tests.Builder
+import Tests.Components
 
 open Crucible
 

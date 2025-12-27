@@ -25,3 +25,12 @@ import Scribe.Builder
 import Scribe.Elements
 import Scribe.RouteAttrs
 import Scribe.Svg
+
+-- Component system
+import Scribe.Component
+import Scribe.Components.Card
+import Scribe.Components.Modal
+import Scribe.Components.Panel
+import Scribe.Components.Form
+import Scribe.Components.Navigation
+import Scribe.Components.Alert
