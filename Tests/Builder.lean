@@ -425,6 +425,96 @@ test "mergeAttrs in element context" := do
     button (baseAttrs +++ variantAttrs) (text "Click")
   result ≡ "<button class=\"btn btn-primary\" type=\"button\" disabled=\"\">Click</button>"
 
+-- SVG Element Tests
+
+test "svg element with viewBox" := do
+  let result := HtmlM.render do
+    Svg.svg [Svg.viewBox_ "0 0 24 24", Svg.width_ 24, Svg.height_ 24] do
+      pure ()
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"></svg>"
+
+test "svg path element" := do
+  let result := HtmlM.render do
+    Svg.svg [Svg.viewBox_ "0 0 24 24"] do
+      Svg.path [Svg.d_ "M12 2L2 7l10 5", Svg.fill_ "currentColor"]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><path d=\"M12 2L2 7l10 5\" fill=\"currentColor\"></path></svg>"
+
+test "svg circle element" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.circle [Svg.cx_ 50, Svg.cy_ 50, Svg.r_ 40, Svg.fill_ "red"]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"50.000000\" cy=\"50.000000\" r=\"40.000000\" fill=\"red\"></circle></svg>"
+
+test "svg rect element" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.rect [Svg.x_ 10, Svg.y_ 10, Svg.width_ 100, Svg.height_ 50, Svg.fill_ "blue"]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"10.000000\" y=\"10.000000\" width=\"100\" height=\"50\" fill=\"blue\"></rect></svg>"
+
+test "svg group element" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.g [Svg.transform_ "translate(10,10)"] do
+        Svg.circle [Svg.r_ 5]
+        Svg.circle [Svg.cx_ 20, Svg.r_ 5]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><g transform=\"translate(10,10)\"><circle r=\"5.000000\"></circle><circle cx=\"20.000000\" r=\"5.000000\"></circle></g></svg>"
+
+test "svg line element" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.line [Svg.x1_ 0, Svg.y1_ 0, Svg.x2_ 100, Svg.y2_ 100, Svg.stroke_ "black"]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"0.000000\" y1=\"0.000000\" x2=\"100.000000\" y2=\"100.000000\" stroke=\"black\"></line></svg>"
+
+test "svg text element" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.text [Svg.x_ 50, Svg.y_ 50, Svg.textAnchor_ "middle"] do
+        HtmlM.text "Hello"
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><text x=\"50.000000\" y=\"50.000000\" text-anchor=\"middle\">Hello</text></svg>"
+
+test "svg with gradient" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.defs do
+        Svg.linearGradient [id_ "grad1"] do
+          Svg.stop [Svg.offset_ "0%", Svg.stopColor_ "red"]
+          Svg.stop [Svg.offset_ "100%", Svg.stopColor_ "blue"]
+      Svg.rect [Svg.fill_ "url(#grad1)", Svg.width_ 100, Svg.height_ 100]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><defs><linearGradient id=\"grad1\"><stop offset=\"0%\" stop-color=\"red\"></stop><stop offset=\"100%\" stop-color=\"blue\"></stop></linearGradient></defs><rect fill=\"url(#grad1)\" width=\"100\" height=\"100\"></rect></svg>"
+
+test "svg polyline and polygon" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.polyline [Svg.points_ "0,0 50,25 100,0", Svg.fill_ "none", Svg.stroke_ "black"]
+      Svg.polygon [Svg.points_ "50,0 100,50 50,100 0,50", Svg.fill_ "lime"]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><polyline points=\"0,0 50,25 100,0\" fill=\"none\" stroke=\"black\"></polyline><polygon points=\"50,0 100,50 50,100 0,50\" fill=\"lime\"></polygon></svg>"
+
+test "svg stroke attributes" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.path [Svg.d_ "M0 0 L100 100",
+                Svg.stroke_ "black",
+                Svg.strokeWidth_ 2,
+                Svg.strokeLinecap_ "round",
+                Svg.strokeDasharray_ "5,5"]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 0 L100 100\" stroke=\"black\" stroke-width=\"2.000000\" stroke-linecap=\"round\" stroke-dasharray=\"5,5\"></path></svg>"
+
+test "svg use element with symbol" := do
+  let result := HtmlM.render do
+    Svg.svg [] do
+      Svg.defs do
+        Svg.symbol [id_ "icon"] do
+          Svg.circle [Svg.r_ 10]
+      Svg.use [Svg.href_ "#icon", Svg.x_ 50, Svg.y_ 50]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\"><defs><symbol id=\"icon\"><circle r=\"10.000000\"></circle></symbol></defs><use href=\"#icon\" x=\"50.000000\" y=\"50.000000\"></use></svg>"
+
+test "svg title for accessibility" := do
+  let result := HtmlM.render do
+    Svg.svg [role_ "img", ariaLabel_ "A red circle"] do
+      Svg.title "Red Circle"
+      Svg.circle [Svg.cx_ 50, Svg.cy_ 50, Svg.r_ 40, Svg.fill_ "red"]
+  result ≡ "<svg xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"A red circle\"><title>Red Circle</title><circle cx=\"50.000000\" cy=\"50.000000\" r=\"40.000000\" fill=\"red\"></circle></svg>"
+
 #generate_tests
 
 end Tests.Builder

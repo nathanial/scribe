@@ -23,3 +23,4 @@ import Scribe.Attr
 import Scribe.Builder
 import Scribe.Elements
 import Scribe.RouteAttrs
+import Scribe.Svg
