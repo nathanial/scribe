@@ -15,7 +15,7 @@ A type-safe, monadic HTML builder for Lean 4.
 Add to your `lakefile.lean`:
 
 ```lean
-require scribe from ".." / "scribe"  -- or git URL
+require scribe from git "https://github.com/nathanial/scribe" @ "v0.0.1"
 ```
 
 ## Usage
