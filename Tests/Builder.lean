@@ -651,6 +651,6 @@ test "type-safe link element" := do
       text "External Link"
   result ≡ "<a href=\"https://example.com\" target=\"_blank\" rel=\"noopener noreferrer\">External Link</a>"
 
-#generate_tests
+
 
 end Tests.Builder

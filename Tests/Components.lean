@@ -377,6 +377,6 @@ test "breadcrumbs current item has no link" := do
   -- Current item should be in a span, not an anchor
   shouldSatisfy (strContains result "<span>Current</span>") "current in span"
 
-#generate_tests
+
 
 end Tests.Components
